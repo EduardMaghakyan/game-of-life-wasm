@@ -20,6 +20,12 @@ wasm-pack test --headless --firefox
 wasm-pack publish
 ```
 
+### 🛠️ Install NPM dependencies with `cd && npm install`
+
+```
+cd www && npm install
+```
+
 ### :eyes: Browse with `cd www && npm run start`
 
 ```
