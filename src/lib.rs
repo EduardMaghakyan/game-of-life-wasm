@@ -32,7 +32,6 @@ pub enum Cell {
 }
 
 impl Cell {
-
     fn toggle(&mut self) {
         *self = match *self {
             Cell::Alive => Cell::Dead,
@@ -88,7 +87,7 @@ impl Universe {
                 //     cell,
                 //     live_neighbors
                 // );
-                
+
                 let next_cell = match (cell, live_neighbors) {
                     (Cell::Alive, x) if x < 2 => Cell::Dead,
                     (Cell::Alive, 2) | (Cell::Alive, 3) => Cell::Alive,
@@ -156,10 +155,27 @@ impl Universe {
         let idx = self.get_index(row, column);
         self.cells[idx].toggle();
     }
+
+    pub fn reset(&mut self) {
+        self.cells = (0..self.width * self.height)
+            .map(|_| {
+                if js_sys::Math::random() < 0.5 {
+                    Cell::Alive
+                } else {
+                    Cell::Dead
+                }
+            })
+            .collect();
+    }
+
+    pub fn kill(&mut self) {
+        self.cells = (0..self.width() * self.height)
+            .map(|_| Cell::Dead)
+            .collect();
+    }
 }
 
 impl Universe {
-
     pub fn get_cells(&self) -> &[Cell] {
         &self.cells
     }

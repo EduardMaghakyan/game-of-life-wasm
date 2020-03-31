@@ -17,6 +17,9 @@ const universe = Universe.new();
 const width = universe.width();
 const height = universe.height();
 const canvas = document.getElementById("game-of-life-canvas");
+const ticksRate = document.getElementById('animation-frame');
+const reset = document.getElementById('reset');
+const kill = document.getElementById('kill');
 canvas.height = (CELL_SIZE + 1) * height + 1;
 canvas.width = (CELL_SIZE + 1) * width + 1;
 
@@ -71,10 +74,27 @@ const drawCells = () => {
     ctx.stroke();
 };
 let animationId = null;
+let framesPerSecond = 10;
 
+function animate() {
+    setTimeout(function () {
+        requestAnimationFrame(animate);
+
+        // animating/drawing code goes here
+
+
+    }, 1000 / framesPerSecond);
+}
+
+let count = 0;
+let currentRate = ticksRate.nodeValue;
 const renderLoop = () => {
-    // debugger;
-    universe.tick();
+    while(count <= currentRate) {
+        universe.tick();
+        count++;
+        // debugger;
+    }
+    count = 0
 
     drawGrid();
     drawCells();
@@ -126,4 +146,17 @@ canvas.addEventListener("click", event => {
 
     drawGrid();
     drawCells();
+});
+
+
+ticksRate.addEventListener('change', event => {
+    currentRate = event.target.value;
+});
+
+reset.addEventListener('click', event => {
+    universe.reset();
+});
+
+kill.addEventListener('click', event => {
+    universe.kill();
 });
